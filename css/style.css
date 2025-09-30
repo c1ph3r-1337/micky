@@ -1,0 +1,338 @@
+/* --- 1. Global Styles & Variables (Adjusted for Main Content Card) --- */
+:root {
+    /* Main Page Background Gradient - Darker and Atmospheric (UNCHANGED) */
+    --page-gradient-start: #1a1a2e; /* Deep dark blue */
+    --page-gradient-end: #16213e;   /* Slightly lighter dark blue */
+    
+    /* NEW: Main Content Card Background Gradient - Warm Gold/Orange */
+    --main-card-bg-start: #FFDDAA; /* Light golden beige */
+    --main-card-bg-end: #FFC080;   /* Soft orange */
+
+    /* Colors for content INSIDE the main card */
+    --inner-card-bg: rgba(255, 255, 255, 0.7); /* Light transparent white for internal cards */
+    --inner-text-color: #4A4A4A; /* Darker text for readability on light BG */
+    --inner-heading-color: #2C2C2C; /* Stronger dark for headings */
+    --gold-gradient: linear-gradient(90deg, #FFD700, #FDB813);
+    
+    /* Borders & Shadows */
+    --subtle-border-dark: rgba(255, 255, 255, 0.1); /* For elements on dark page BG */
+    --subtle-border-light: rgba(0, 0, 0, 0.08); /* For elements on light main card BG */
+    --glass-navbar-border: rgba(255, 255, 255, 0.25); /* For the navbar glass border */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--page-gradient-start), var(--page-gradient-end));
+    background-attachment: fixed;
+    color: var(--text-color); /* This will apply if not overridden by main-content-card */
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- 2. Header & Glass Navigation (UNCHANGED from last request) --- */
+.main-header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    max-width: 90%;
+    padding: 10px 30px;
+    z-index: 1000;
+    
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-navbar-border);
+    border-radius: 50px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-header nav {
+    padding: 0; 
+    max-width: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--heading-color);
+    text-decoration: none;
+    padding-right: 20px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* --- NEW: Main Content Card (The full page UI container) --- */
+.main-content-card {
+    position: relative;
+    z-index: 1; /* Ensure it sits above the page background, but below the navbar */
+    max-width: 1400px; /* Wider to accommodate internal content */
+    margin: 100px auto 50px auto; /* Push down from navbar, center, and margin-bottom */
+    background: linear-gradient(145deg, var(--main-card-bg-start), var(--main-card-bg-end));
+    border-radius: 40px; /* Very curved edges */
+    padding: 40px; /* Internal padding */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); /* Prominent shadow for 3D lift */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Subtle white inner border */
+    overflow: hidden; /* Important for internal elements that might go beyond */
+}
+
+.main-content-card main {
+    /* No specific styling needed here, just a container */
+}
+
+/* --- 3. Hero Section (Adjusted for new parent card) --- */
+.hero {
+    /* Removed padding-top, now handled by main-content-card margin */
+    padding: 50px 0; /* Add some vertical padding */
+    height: auto; /* Adjust height to content, not fixed viewport */
+    min-height: 400px; /* Minimum height for visual impact */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: none; /* No background image on hero now, parent handles it */
+    position: relative;
+    /* Adding a subtle inner gradient for visual depth, similar to the reference */
+    background: linear-gradient(to top, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 50%);
+    border-radius: 30px; /* Match parent curvature */
+    margin-bottom: 60px;
+}
+
+.hero-content h1 {
+    font-size: 4rem; /* Slightly smaller to fit within card */
+    color: var(--inner-heading-color); /* Darker heading */
+    margin-bottom: 0.8rem;
+    text-shadow: none; /* Remove shadow, less contrast needed on lighter bg */
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto 1.5rem auto;
+    color: var(--inner-text-color); /* Darker text */
+    text-shadow: none;
+}
+
+/* --- 4. Golden Gradient Button (Adjusted text color for light bg) --- */
+.gold-button {
+    background: var(--gold-gradient);
+    color: #2C2C2C; /* Dark text for contrast on gold */
+    border: none;
+    padding: 15px 30px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gold-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 20px rgba(253, 184, 19, 0.3);
+}
+
+/* --- NEW: Most Selling Section & Card Container --- */
+.most-selling-section {
+    padding: 0px 20px 60px 20px; /* Adjust padding for the section */
+}
+
+.most-selling-section h2 {
+    text-align: center;
+    font-size: 2.5rem; /* Slightly smaller heading */
+    margin-bottom: 40px;
+    color: var(--inner-heading-color); /* Darker heading */
+}
+
+.most-selling-card-container {
+    background: rgba(255, 255, 255, 0.3); /* Light transparent background for the container */
+    backdrop-filter: blur(15px); /* Strong blur for this container */
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--subtle-border-light); /* Light subtle border */
+    border-radius: 35px; /* Very rounded edges, slightly less than main card */
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Lifted shadow */
+}
+
+/* --- 5. Product Grid & Cards (Adjusted for light inner BG) --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min width */
+    gap: 25px; /* Slightly smaller gap */
+}
+
+.product-card {
+    position: relative;
+    background-color: var(--inner-card-bg); /* Use inner card bg */
+    border-radius: 18px; /* More rounded than before */
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.08); /* Light subtle border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Lighter shadow */
+}
+
+.product-card:hover {
+    transform: translateY(-8px); /* Less lift on hover */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Stronger hover shadow */
+}
+
+.product-card img {
+    width: 100%;
+    height: 250px; /* Slightly smaller images */
+    object-fit: contain; /* Use contain for products to show full item if they have transparent BG */
+    display: block;
+    padding: 20px; /* Padding for the image within the card */
+    background: rgba(255, 255, 255, 0.6); /* Very subtle transparent white behind image */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Subtle separator */
+}
+
+.product-info {
+    padding: 15px; /* Smaller padding */
+}
+
+.product-info h3 {
+    color: var(--inner-heading-color);
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.product-info p {
+    color: var(--inner-text-color);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+
+/* The Glass Panel & Hover Animation (Adjusted for light inner BG) */
+.glass-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    
+    background: rgba(255, 255, 255, 0.7); /* More opaque white glass */
+    backdrop-filter: blur(12px); /* Slightly less blur than nav bar */
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.4s ease-in-out;
+}
+
+.product-card:hover .glass-panel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.glass-panel p {
+    margin-bottom: 15px; /* Smaller margin */
+    color: var(--inner-heading-color); /* Dark text */
+    font-size: 0.95rem;
+}
+
+/* --- 6. Responsiveness for Mobile --- */
+@media (max-width: 768px) {
+    .main-header {
+        width: 95%;
+        padding: 8px 15px;
+        top: 15px;
+    }
+    .logo {
+        font-size: 1.2rem;
+    }
+    .nav-links {
+        display: none;
+    }
+
+    .main-content-card {
+        margin: 80px auto 30px auto;
+        border-radius: 30px;
+        padding: 20px;
+    }
+    
+    .hero {
+        padding: 30px 0;
+        min-height: 300px;
+    }
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .most-selling-section h2 {
+        font-size: 2rem;
+    }
+    .most-selling-card-container {
+        border-radius: 25px;
+        padding: 20px;
+    }
+    .product-grid {
+        gap: 20px;
+    }
+    .product-card {
+        border-radius: 15px;
+    }
+    .product-card img {
+        height: 200px;
+        padding: 15px;
+    }
+    .product-info h3 {
+        font-size: 1.1rem;
+    }
+    .product-info p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    .gold-button {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+}

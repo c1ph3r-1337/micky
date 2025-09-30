@@ -6,7 +6,7 @@
     <title>Micky Money - Product Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -74,140 +74,171 @@
         }
         .thumbnail.active { border-color: #daa520; }
         
-        .related-product-card {
+        .product-item {
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .product-item:hover {
+            transform: translateY(-5px);
+        }
+        .related-product-image-card {
             background: rgba(50, 50, 50, 0.4);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-            position: relative;
+            border-radius: 1.5rem;
             overflow: hidden;
+            transition: border-color 0.3s ease;
+            position: relative;
         }
-        .related-product-card .image-wrapper {
+        .product-item:hover .related-product-image-card {
+            border-color: #daa520;
+        }
+        .related-product-image-card .image-wrapper {
             background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0.1) 65%);
             border-radius: 50%;
-            width: 120px;
-            height: 120px;
+            width: 80%;
+            aspect-ratio: 1 / 1;
+            height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1rem auto;
+            margin: 1.5rem auto;
             position: relative;
             z-index: 1;
         }
-        .related-product-card img {
-            max-width: 100px;
+        .related-product-image-card .image-wrapper img {
+            max-width: 75%;
             height: auto;
             transform: rotate(-15deg);
             transition: transform 0.3s ease-in-out;
         }
-        @media (min-width: 640px) {
-            .related-product-card .image-wrapper {
-                width: 180px;
-                height: 180px;
-            }
-            .related-product-card img {
-                max-width: 150px;
-            }
-        }
-        .related-product-card:hover img {
+        .product-item:hover .related-product-image-card .image-wrapper img {
             transform: rotate(0deg) scale(1.05);
         }
-        /* FIX: Price tag styling updated to prevent overlap */
-        .related-product-card .price-tag {
-            background-color: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(5px);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-weight: bold;
-            color: #fff;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-            display: inline-block;
-            margin-top: 0.75rem;
-        }
-        .related-product-card .shoe-title {
-            color: #eee;
+        .related-product-details {
             margin-top: 1rem;
+            text-align: center;
+        }
+        .related-product-title {
+            color: #fff;
             font-weight: 600;
         }
-        @media (max-width: 767px) {
-            .gradient-section {
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-            .gradient-section h1 {
-                font-size: 2.5rem;
-                margin-bottom: 1.5rem;
-            }
-            .product-card {
-                padding: 1.5rem;
-            }
+
+        .price-container {
+            margin-top: 0.75rem;
+            justify-content: center;
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+        }
+        .original-price {
+            text-decoration: line-through;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+        .discount-price {
+            font-weight: bold;
+            color: #e5e7eb;
+            font-size: 1.25rem;
+        }
+        .discount-text {
+            color: #34d399;
+            font-weight: 600;
+            font-size: 1rem;
         }
         
-        #cart-modal.hidden, #alert-modal.hidden {
-            display: none;
-        }
-        .cart-item-remove:hover {
-            background-color: #ef4444;
+        .discount-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: #10b981;
             color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            z-index: 2;
+        }
+
+        @media (max-width: 767px) {
+            .gradient-section { padding-top: 2rem; padding-bottom: 2rem; }
+            .gradient-section h1 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+            .product-card { padding: 1.5rem; }
         }
         
+        #cart-modal.hidden, #alert-modal.hidden { display: none; }
         @keyframes shake {
             10%, 90% { transform: translate3d(-1px, 0, 0); }
             20%, 80% { transform: translate3d(2px, 0, 0); }
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
-        .shake {
-            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-        }
+        .shake { animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both; }
 
-        #add-to-cart-btn.adding {
-            background-color: #f0b93a !important;
-            transform: scale(1.05);
+        #add-to-cart-btn.adding { background-color: #f0b93a !important; transform: scale(1.05); }
+        #add-to-cart-btn.added { background-color: #22c55e !important; }
+        
+        .cart-tab {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
         }
-        #add-to-cart-btn.added {
-            background-color: #22c55e !important;
+        .cart-tab.active {
+            color: #daa520;
+            border-color: #daa520;
+        }
+        .quantity-btn {
+            background-color: #4b5563;
+            color: white;
+            border-radius: 9999px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .quantity-btn:hover {
+            background-color: #6b7280;
         }
     </style>
 </head>
-<body class="p-4 sm:p-6 md:p-10">
+<body class="p-4 sm:p-6 md:p-10 pb-20 md:pb-10">
     <div class="main-container p-6 sm:p-8 relative text-gray-200">
 
         <header class="flex items-center justify-between mb-8">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-goldenrod-500 rounded-full flex items-center justify-center text-black text-xl font-bold" style="background-color: #daa520;">
-                    <img src="images/mm_logo_black.png" alt="Micky Money Logo">
+            <div class="flex-1">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-goldenrod-500 rounded-full flex items-center justify-center text-black text-xl font-bold" style="background-color: #daa520;">
+                        MM
+                    </div>
+                    <span class="text-2xl font-bold text-gray-100">Micky Money</span>
                 </div>
-                <span class="text-2xl font-bold text-gray-100">Micky Money</span>
             </div>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="#" class="text-white font-semibold relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-goldenrod-400 after:bottom-[-4px] after:left-0" style="--tw-after-background-color: #daa520;">Home</a>
+                <a href="index.html" class="text-white font-semibold relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-goldenrod-400 after:bottom-[-4px] after:left-0" style="--tw-after-background-color: #daa520;">Home</a>
                 <a href="shop.html" class="text-gray-400 hover:text-white">Shop</a>
                 <a href="#" class="text-gray-400 hover:text-white">Contact</a>
             </nav>
-            <div class="hidden md:flex items-center space-x-4">
-                <span id="header-price" class="text-lg font-medium text-gray-100">₹599.00</span>
-                <button class="cart-trigger relative w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-200"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span class="cart-count absolute top-1 right-1 w-5 h-5 bg-goldenrod-500 text-black text-xs font-bold rounded-full flex items-center justify-center" style="background-color: #daa520;">0</span>
-                </button>
-            </div>
-            <div class="md:hidden">
-                <button id="open-menu-btn" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
-                </button>
+            <div class="flex-1 flex justify-end">
+                <div class="hidden md:flex items-center space-x-4">
+                    <button class="cart-trigger relative w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-200"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <span class="cart-count absolute top-1 right-1 w-5 h-5 bg-goldenrod-500 text-black text-xs font-bold rounded-full flex items-center justify-center" style="background-color: #daa520;">0</span>
+                    </button>
+                </div>
+                <div class="md:hidden">
+                    <button id="open-menu-btn" class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                    </button>
+                </div>
             </div>
         </header>
         <div id="mobile-menu" class="hidden fixed inset-0 bg-black/50 backdrop-blur-lg z-50 flex flex-col items-center justify-center">
-            <button id="close-menu-btn" class="absolute top-8 right-8 text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+            <button id="close-menu-btn" class="absolute top-8 right-8 text-white"><svg class="h-8 w-8" fill="none" viewBox="0 0 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
             <nav class="flex flex-col items-center space-y-8 text-2xl">
-                <a href="#" class="text-white font-semibold">Home</a>
+                <a href="index.html" class="text-white font-semibold">Home</a>
                 <a href="shop.html" class="text-gray-400 hover:text-white">Shop</a>
                 <a href="#" class="text-gray-400 hover:text-white">Contact</a>
             </nav>
@@ -224,9 +255,6 @@
                         <div class="image-bg-circle absolute inset-0 rounded-full scale-110"></div>
                         <div class="image-bg-circle absolute inset-4 rounded-full scale-100"></div>
                         <img id="main-product-image" src="images/dryer.png" alt="Premium Hair Dryer" class="relative z-10 w-full transform -rotate-12 hover:rotate-0 transition-transform duration-500 ease-in-out">
-                        <div id="price-bubble" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-full px-6 py-2 text-xl font-bold text-white shadow-md">
-                            ₹599
-                        </div>
                     </div>
                     <button id="add-to-cart-btn" class="w-full lg:w-auto lg:px-16 mt-8 bg-goldenrod-600 text-black font-bold py-4 rounded-xl hover:bg-goldenrod-500 transition-all duration-300" style="background-color: #daa520;">Add to cart</button>
                 </div>
@@ -234,20 +262,17 @@
                 <div class="lg:order-1 text-center lg:text-left">
                     <h2 id="product-name" class="text-3xl lg:text-4xl font-bold text-gray-100 mb-2">Premium Hair Dryer</h2>
                     
+                    <div id="main-price-container" class="price-container justify-center lg:justify-start mb-6">
+                        </div>
+                    
                     <p id="product-description" class="hidden lg:block text-gray-400 mb-10">
                         Style. Groom. Glow. Experience professional-grade grooming with our premium dryer & styling tools. This high-performance dryer combines ionic technology with a powerful motor for faster drying, less frizz, and a shinier, healthier finish.
                     </p>
                     
                     <div class="grid grid-cols-3 gap-3 lg:max-w-sm" id="thumbnail-container">
-                        <button class="thumbnail active p-2 border-2 border-transparent bg-gray-800 rounded-lg transition" data-product-id="dryer-01">
-                            <img src="images/dryer.png" alt="Hair Dryer" class="w-full h-auto aspect-square object-contain pointer-events-none">
-                        </button>
-                        <button class="thumbnail p-2 border-2 border-transparent bg-gray-800 rounded-lg transition" data-product-id="straightener-01">
-                            <img src="https://placehold.co/100x100/333/FFF?text=Straightener" alt="Straightener" class="w-full h-auto aspect-square object-contain pointer-events-none">
-                        </button>
-                        <button class="thumbnail p-2 border-2 border-transparent bg-gray-800 rounded-lg transition" data-product-id="nozzle-01">
-                            <img src="https://placehold.co/100x100/333/FFF?text=Nozzle" alt="Nozzle" class="w-full h-auto aspect-square object-contain pointer-events-none">
-                        </button>
+                        <button class="thumbnail active p-2 border-2 border-transparent bg-gray-800 rounded-lg transition" data-product-id="dryer-01"><img src="images/dryer.png" alt="Hair Dryer" class="w-full h-auto aspect-square object-contain pointer-events-none"></button>
+                        <button class="thumbnail p-2 border-2 border-transparent bg-gray-800 rounded-lg transition" data-product-id="straightener-01"><img src="https://placehold.co/100x100/333/FFF?text=Straightener" alt="Straightener" class="w-full h-auto aspect-square object-contain pointer-events-none"></button>
+                        <button class="thumbnail p-2 border-2 border-transparent bg-gray-800 rounded-lg transition" data-product-id="nozzle-01"><img src="https://placehold.co/100x100/333/FFF?text=Nozzle" alt="Nozzle" class="w-full h-auto aspect-square object-contain pointer-events-none"></button>
                     </div>
                 </div>
             </div>
@@ -258,52 +283,79 @@
                 <h3 class="text-3xl font-bold text-gray-100 mb-4 sm:mb-0">Our Styling Tools</h3>
             </div>
             
-            <div class="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
-                <!-- FIX: Each card is now a clickable link -->
-                <a href="product.html" class="block transition hover:scale-105">
-                    <div class="related-product-card rounded-2xl p-4 sm:p-6 text-center h-full">
-                        <div class="image-wrapper">
-                            <img src="clipper.png" alt="Pro Hair Straightener" class="z-10">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-8 md:gap-y-12">
+                 <a href="product.html" class="product-item">
+                    <div class="related-product-image-card lg:pb-4">
+                        <div class="discount-badge">20% OFF</div>
+                        <div class="image-wrapper"><img src="clipper.png" alt="Pro Hair Straightener"></div>
+                        <div class="hidden lg:block text-center p-4">
+                            <h4 class="related-product-title text-lg">Pro Hair Straightener</h4>
+                            <div class="price-container">
+                                <span class="original-price">₹749</span>
+                                <span class="discount-price">₹599</span>
+                            </div>
                         </div>
-                        <h4 class="shoe-title font-semibold text-base sm:text-lg text-gray-200">Pro Hair Straightener</h4>
-                        <p class="price-tag text-goldenrod-400" style="color: #daa520;">₹599.00</p>
+                    </div>
+                    <div class="lg:hidden related-product-details">
+                        <h4 class="related-product-title text-lg">Pro Hair Straightener</h4>
+                        <div class="price-container">
+                            <span class="original-price">₹749</span>
+                            <span class="discount-price">₹599</span>
+                        </div>
                     </div>
                 </a>
-                <a href="product.html" class="block transition hover:scale-105">
-                    <div class="related-product-card rounded-2xl p-4 sm:p-6 text-center h-full">
-                        <div class="image-wrapper">
-                            <img src="clipper.png" alt="Ionic Hair Dryer" class="z-10">
+                 <a href="product.html" class="product-item">
+                    <div class="related-product-image-card lg:pb-4">
+                        <div class="discount-badge">15% OFF</div>
+                        <div class="image-wrapper"><img src="clipper.png" alt="Ionic Hair Dryer"></div>
+                        <div class="hidden lg:block text-center p-4">
+                             <h4 class="related-product-title text-lg">Ionic Hair Dryer</h4>
+                            <div class="price-container">
+                                <span class="original-price">₹999</span>
+                                <span class="discount-price">₹849</span>
+                            </div>
                         </div>
-                        <h4 class="shoe-title font-semibold text-base sm:text-lg text-gray-200">Ionic Hair Dryer</h4>
-                        <p class="price-tag text-goldenrod-400" style="color: #daa520;">₹599.00</p>
+                    </div>
+                     <div class="lg:hidden related-product-details">
+                        <h4 class="related-product-title text-lg">Ionic Hair Dryer</h4>
+                        <div class="price-container">
+                            <span class="original-price">₹999</span>
+                            <span class="discount-price">₹849</span>
+                        </div>
                     </div>
                 </a>
-                <a href="product.html" class="block transition hover:scale-105">
-                    <div class="related-product-card rounded-2xl p-4 sm:p-6 text-center h-full">
-                        <div class="image-wrapper">
-                            <img src="clipper.png" alt="Automatic Hair Curler" class="z-10">
+                 <a href="product.html" class="product-item">
+                    <div class="related-product-image-card lg:pb-4">
+                        <div class="discount-badge">25% OFF</div>
+                        <div class="image-wrapper"><img src="clipper.png" alt="Automatic Hair Curler"></div>
+                        <div class="hidden lg:block text-center p-4">
+                            <h4 class="related-product-title text-lg">Automatic Hair Curler</h4>
+                            <div class="price-container">
+                                <span class="original-price">₹1999</span>
+                                <span class="discount-price">₹1499</span>
+                            </div>
                         </div>
-                        <h4 class="shoe-title font-semibold text-base sm:text-lg text-gray-200">Automatic Hair Curler</h4>
-                        <p class="price-tag text-goldenrod-400" style="color: #daa520;">₹599.00</p>
+                    </div>
+                     <div class="lg:hidden related-product-details">
+                        <h4 class="related-product-title text-lg">Automatic Hair Curler</h4>
+                        <div class="price-container">
+                            <span class="original-price">₹1999</span>
+                            <span class="discount-price">₹1499</span>
+                        </div>
                     </div>
                 </a>
             </div>
         </section>
 
         <section class="mt-16 text-center">
-            <a href="shop.html" class="inline-block text-black font-bold py-3 px-8 rounded-xl hover:bg-goldenrod-500 transition-colors duration-300 text-lg xl:text-xl" style="background-color: #daa520;">
-                Explore More
-            </a>
+            <a href="shop.html" class="inline-block text-black font-bold py-3 px-8 rounded-xl hover:bg-goldenrod-500 transition-colors duration-300 text-lg xl:text-xl" style="background-color: #daa520;">Explore More</a>
         </section>
 
-        <!-- NEW: Footer section -->
         <footer class="mt-20 pt-10 border-t border-gray-700 text-gray-400">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="md:col-span-2">
                     <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-goldenrod-500 rounded-full flex items-center justify-center text-black text-xl font-bold" style="background-color: #daa520;">
-                            <img src="images/mm_logo_black.png" alt="Micky Money Logo">
-                        </div>
+                        <div class="w-10 h-10 bg-goldenrod-500 rounded-full flex items-center justify-center text-black text-xl font-bold" style="background-color: #daa520;">MM</div>
                         <span class="text-2xl font-bold text-gray-100">Micky Money</span>
                     </div>
                     <p class="text-sm">Premium styling tools for the modern individual. Quality, performance, and elegance in every product.</p>
@@ -311,7 +363,7 @@
                 <div>
                     <h4 class="font-bold text-lg text-white mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="index.html" class="hover:text-white">Home</a></li>
                         <li><a href="shop.html" class="hover:text-white">Shop</a></li>
                         <li><a href="#" class="hover:text-white">Contact</a></li>
                         <li><a href="#" class="hover:text-white">About Us</a></li>
@@ -320,59 +372,78 @@
                 <div>
                     <h4 class="font-bold text-lg text-white mb-4">Follow Us</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.345 2.525c.636-.247 1.363-.416 2.427-.465C9.793 2.013 10.147 2 12.315 2zm0 1.625c-2.403 0-2.728.01-3.688.056-1.131.05-1.751.22-2.285.42a3.287 3.287 0 00-1.18 1.18c-.2.534-.37 1.155-.42 2.285-.046.96-.056 1.285-.056 3.688s.01 2.728.056 3.688c.05 1.131.22 1.751.42 2.285a3.287 3.287 0 001.18 1.18c.534.2 1.155.37 2.285.42.96.046 1.285.056 3.688.056s2.728-.01 3.688-.056c1.131-.05 1.751-.22 2.285-.42a3.287 3.287 0 001.18-1.18c.2-.534.37-1.155.42-2.285.046-.96.056-1.285.056-3.688s-.01-2.728-.056-3.688c-.05-1.131-.22-1.751-.42-2.285a3.287 3.287 0 00-1.18-1.18c-.534-.2-1.155-.37-2.285-.42-.96-.046-1.285-.056-3.688-.056zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zM12 14a2 2 0 110-4 2 2 0 010 4zm5.25-8.5a.938.938 0 100-1.875.938.938 0 000 1.875z" clip-rule="evenodd" /></svg>
-                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.345 2.525c.636-.247 1.363-.416 2.427-.465C9.793 2.013 10.147 2 12.315 2zm0 1.625c-2.403 0-2.728.01-3.688.056-1.131.05-1.751.22-2.285.42a3.287 3.287 0 00-1.18 1.18c-.2.534-.37 1.155-.42 2.285-.046.96-.056 1.285-.056 3.688s.01 2.728.056 3.688c.05 1.131.22 1.751.42 2.285a3.287 3.287 0 001.18 1.18c.534.2 1.155.37 2.285.42.96.046 1.285.056 3.688.056s2.728-.01 3.688-.056c1.131-.05 1.751-.22 2.285-.42a3.287 3.287 0 001.18-1.18c.2-.534.37-1.155.42-2.285.046-.96.056-1.285-.056-3.688s-.01-2.728-.056-3.688c-.05-1.131-.22-1.751-.42-2.285a3.287 3.287 0 00-1.18-1.18c-.534-.2-1.155-.37-2.285-.42-.96-.046-1.285-.056-3.688-.056zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zM12 14a2 2 0 110-4 2 2 0 010 4zm5.25-8.5a.938.938 0 100-1.875.938.938 0 000 1.875z" clip-rule="evenodd" /></svg></a>
                     </div>
                 </div>
             </div>
             <div class="mt-10 pt-6 border-t border-gray-700 text-center text-sm">
-                <p>&copy; 2025 Micky Money. All Rights Reserved.</p>
+                <p>&copy; 2024 Micky Money. All Rights Reserved.</p>
             </div>
         </footer>
     </div>
 
-    <div class="md:hidden fixed bottom-0 left-0 right-0 p-4 flex justify-end z-40 pointer-events-none">
-        <button class="cart-trigger relative w-14 h-14 bg-gray-800 rounded-full flex items-center justify-center shadow-lg pointer-events-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-200"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            <span class="cart-count absolute top-1 right-1 w-5 h-5 bg-goldenrod-500 text-black text-xs font-bold rounded-full flex items-center justify-center" style="background-color: #daa520;">0</span>
-        </button>
-    </div>
-
     <div id="cart-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-800 text-white rounded-2xl shadow-xl w-full max-w-md mx-auto">
-            <div class="p-6 border-b border-gray-700 flex justify-between items-center">
-                <h2 class="text-2xl font-bold">Your Cart</h2>
-                <button id="close-cart-btn" class="text-gray-400 hover:text-white">&times;</button>
+        <div class="bg-gray-800 text-white rounded-2xl shadow-xl w-full max-w-md mx-auto relative">
+            
+            <button id="close-cart-btn" class="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="flex border-b border-gray-700">
+                <button data-tab="cart" class="cart-tab active flex-1 py-3 font-semibold">Your Cart</button>
+                <button data-tab="orders" class="cart-tab flex-1 py-3 font-semibold">My Orders</button>
             </div>
-            <div id="cart-items-container" class="p-6 max-h-64 overflow-y-auto">
-                <p id="empty-cart-msg" class="text-gray-400">Your cart is empty.</p>
-            </div>
-            <div class="p-6 bg-gray-900/50 rounded-b-2xl">
-                <div class="flex justify-between items-center text-lg font-semibold mb-4">
-                    <span>Total</span>
-                    <span id="cart-total">₹0.00</span>
+
+            <div id="cart-content">
+                <div id="cart-items-container" class="p-6 max-h-64 overflow-y-auto">
+                    <p id="empty-cart-msg" class="text-gray-400">Your cart is empty.</p>
                 </div>
-                <button id="checkout-btn" class="w-full bg-goldenrod-600 text-black font-bold py-3 rounded-xl hover:bg-goldenrod-500 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: #daa520;" disabled>
-                    Proceed to Payment
-                </button>
+                <div class="p-6 bg-gray-900/50 rounded-b-2xl">
+                    <div class="flex justify-between items-center text-lg font-semibold mb-4">
+                        <span>Total</span>
+                        <span id="cart-total">₹0.00</span>
+                    </div>
+                    <button id="checkout-btn" class="w-full bg-goldenrod-600 text-black font-bold py-3 rounded-xl hover:bg-goldenrod-500 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: #daa520;" disabled>Proceed to Payment</button>
+                </div>
+            </div>
+
+            <div id="orders-content" class="hidden">
+                 <div id="order-history-container" class="p-6 max-h-[356px] overflow-y-auto">
+                    <p id="no-orders-msg" class="text-gray-400">You have no past orders.</p>
+                    </div>
             </div>
         </div>
     </div>
-    
     <div id="alert-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-gray-800 text-white rounded-2xl shadow-xl w-full max-w-sm mx-auto p-6 text-center">
             <h3 id="alert-title" class="text-xl font-bold mb-2">Payment Gateway</h3>
-            <p id="alert-message" class="text-gray-300 mb-6">This is a demo. No real payment will be processed. Thank you for trying out our store!</p>
+            <p id="alert-message" class="text-gray-300 mb-6">This is a demo. No real payment will be processed.</p>
             <button id="close-alert-btn" class="bg-goldenrod-600 text-black font-bold py-2 px-6 rounded-xl" style="background-color: #daa520;">OK</button>
         </div>
     </div>
+    
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 flex justify-around items-center z-40 h-16">
+        <a href="index.html" class="flex flex-1 flex-col items-center justify-center text-center py-2" style="color: #daa520;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+            <span class="text-xs font-medium">Home</span>
+        </a>
+        <a href="shop.html" class="flex flex-1 flex-col items-center justify-center text-center py-2 text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            <span class="text-xs font-medium">Shop</span>
+        </a>
+        <button class="cart-trigger relative flex flex-1 flex-col items-center justify-center text-center py-2 text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            <span class="text-xs font-medium">Cart</span>
+            <span class="cart-count absolute top-1 right-5 w-5 h-5 bg-goldenrod-500 text-black text-xs font-bold rounded-full flex items-center justify-center" style="background-color: #daa520;">0</span>
+        </button>
+        <a href="#" class="flex flex-1 flex-col items-center justify-center text-center py-2 text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            <span class="text-xs font-medium">Contact</span>
+        </a>
+    </nav>
 
 
     <script>
@@ -392,193 +463,236 @@
             const mainImage = document.getElementById('main-product-image');
             const productNameEl = document.getElementById('product-name');
             const productDescEl = document.getElementById('product-description');
-            const priceBubbleEl = document.getElementById('price-bubble');
-            const headerPriceEl = document.getElementById('header-price');
+            const mainPriceContainer = document.getElementById('main-price-container');
             const thumbnailContainer = document.getElementById('thumbnail-container');
             const thumbnails = thumbnailContainer.querySelectorAll('.thumbnail');
+            const cartTabs = document.querySelectorAll('.cart-tab');
+            const cartContent = document.getElementById('cart-content');
+            const ordersContent = document.getElementById('orders-content');
+            const orderHistoryContainer = document.getElementById('order-history-container');
+            const noOrdersMsg = document.getElementById('no-orders-msg');
             
             // --- PRODUCT DATA ---
             const products = {
-                'dryer-01': { 
-                    id: 'dryer-01', 
-                    name: 'Premium Hair Dryer', 
-                    price: 599.00, 
-                    image: 'images/dryer.png',
-                    description: 'Style. Groom. Glow. Experience professional-grade grooming with our premium dryer & styling tools. This high-performance dryer combines ionic technology with a powerful motor for faster drying, less frizz, and a shinier, healthier finish.'
-                },
-                'straightener-01': {
-                    id: 'straightener-01',
-                    name: 'Pro Hair Straightener',
-                    price: 749.00,
-                    image: 'https://placehold.co/600x600/333/FFF?text=Straightener',
-                    description: 'Achieve sleek, salon-quality results with our Pro Hair Straightener. Featuring ceramic plates and adjustable temperature settings, it glides effortlessly through hair for a smooth, polished look.'
-                },
-                'nozzle-01': {
-                    id: 'nozzle-01',
-                    name: 'Concentrator Nozzle',
-                    price: 199.00,
-                    image: 'https://placehold.co/600x600/333/FFF?text=Nozzle',
-                    description: 'Focus airflow for precise styling and smoothing with the Concentrator Nozzle attachment. Perfect for creating sleek blowouts and targeted drying.'
-                }
+                'dryer-01': { id: 'dryer-01', name: 'Premium Hair Dryer', price: 599.00, discount: 20, image: 'images/dryer.png', description: 'Style. Groom. Glow. Experience professional-grade grooming...' },
+                'straightener-01': { id: 'straightener-01', name: 'Pro Hair Straightener', price: 749.00, discount: 15, image: 'https://placehold.co/600x600/333/FFF?text=Straightener', description: 'Achieve sleek, salon-quality results with our Pro Hair Straightener...' },
+                'nozzle-01': { id: 'nozzle-01', name: 'Concentrator Nozzle', price: 199.00, discount: 10, image: 'https://placehold.co/600x600/333/FFF?text=Nozzle', description: 'Focus airflow for precise styling and smoothing...' }
             };
 
             // --- STATE ---
-            let currentProductId = 'dryer-01'; // Default product
-            let cart = loadCartFromSession();
+            let currentProductId = 'dryer-01';
+            let cart = loadDataFromSession('mickyMoneyCart', {});
+            let orders = loadDataFromSession('mickyMoneyOrders', []);
 
-            // --- CART & SESSION STORAGE ---
-            function loadCartFromSession() {
-                const savedCart = sessionStorage.getItem('mickyMoneyCart');
-                return savedCart ? JSON.parse(savedCart) : {};
+            // --- DATA & SESSION STORAGE ---
+            function loadDataFromSession(key, defaultValue) {
+                const savedData = sessionStorage.getItem(key);
+                return savedData ? JSON.parse(savedData) : defaultValue;
             }
-
-            function saveCartToSession(cartData) {
-                sessionStorage.setItem('mickyMoneyCart', JSON.stringify(cartData));
+            function saveDataToSession(key, data) {
+                sessionStorage.setItem(key, JSON.stringify(data));
             }
 
             // --- FUNCTIONS ---
             function displayProduct(productId) {
                 const product = products[productId];
                 if (!product) return;
-
                 currentProductId = productId;
                 mainImage.src = product.image;
                 mainImage.alt = product.name;
                 productNameEl.textContent = product.name;
                 productDescEl.textContent = product.description;
-                priceBubbleEl.textContent = `₹${product.price.toFixed(0)}`;
-                headerPriceEl.textContent = `₹${product.price.toFixed(2)}`;
+                const discountedPrice = product.price * (1 - product.discount / 100);
+                mainPriceContainer.innerHTML = `<span class="original-price">₹${product.price.toFixed(0)}</span> <span class="discount-price">₹${discountedPrice.toFixed(0)}</span> <span class="discount-text">${product.discount}% Off</span>`;
             }
 
             function updateCartUI() {
-                let totalItems = 0;
+                let totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
                 let totalPrice = 0;
-
                 for (const productId in cart) {
                     if (products[productId]) {
-                        const quantity = cart[productId];
-                        totalItems += quantity;
-                        totalPrice += products[productId].price * quantity;
+                        totalPrice += products[productId].price * (1 - products[productId].discount / 100) * cart[productId];
                     }
                 }
-
                 cartCounts.forEach(el => {
                     el.textContent = totalItems;
-                    if (totalItems > parseInt(el.textContent, 10)) {
-                       el.classList.add('shake');
-                       setTimeout(() => el.classList.remove('shake'), 820);
-                    }
+                    el.classList.toggle('hidden', totalItems === 0);
                 });
-                
                 cartTotalEl.textContent = `₹${totalPrice.toFixed(2)}`;
-                
                 checkoutBtn.disabled = totalItems === 0;
                 emptyCartMsg.style.display = totalItems === 0 ? 'block' : 'none';
             }
             
             function renderCartItems() {
-                cartItemsContainer.innerHTML = '';
+                cartItemsContainer.innerHTML = ''; // Clear previous items
                 
+                // Re-append the empty message but keep it hidden if there are items
+                cartItemsContainer.appendChild(emptyCartMsg);
+                emptyCartMsg.style.display = 'none';
+
                 if (Object.keys(cart).length === 0) {
-                     cartItemsContainer.appendChild(emptyCartMsg).style.display = 'block';
-                     return;
+                    emptyCartMsg.style.display = 'block';
+                    return;
                 }
-                
-                cartItemsContainer.appendChild(emptyCartMsg).style.display = 'none';
 
                 for (const productId in cart) {
                     if (products[productId]) {
-                        const quantity = cart[productId];
                         const product = products[productId];
+                        const quantity = cart[productId];
+                        const discountedPrice = product.price * (1 - product.discount / 100);
                         const itemEl = document.createElement('div');
                         itemEl.className = 'flex items-center justify-between mb-4';
                         itemEl.innerHTML = `
                             <div class="flex items-center">
                                 <img src="${product.image}" alt="${product.name}" class="w-16 h-16 object-contain rounded-md bg-gray-700 mr-4">
-                                <div>
-                                    <h4 class="font-semibold">${product.name}</h4>
-                                    <p class="text-sm text-gray-400">Qty: ${quantity}</p>
-                                </div>
+                                <div><h4 class="font-semibold">${product.name}</h4><p class="text-sm text-gray-400">₹${discountedPrice.toFixed(2)}</p></div>
                             </div>
-                            <span class="font-semibold">₹${(product.price * quantity).toFixed(2)}</span>
-                        `;
+                            <div class="flex items-center gap-3">
+                                <button class="quantity-btn decrease-qty" data-id="${productId}">-</button>
+                                <span class="font-semibold">${quantity}</span>
+                                <button class="quantity-btn increase-qty" data-id="${productId}">+</button>
+                            </div>`;
                         cartItemsContainer.appendChild(itemEl);
                     }
                 }
             }
+            
+            function renderOrders() {
+                orderHistoryContainer.innerHTML = '';
+                if (orders.length === 0) {
+                    noOrdersMsg.style.display = 'block';
+                    return;
+                }
+                noOrdersMsg.style.display = 'none';
+                
+                orders.forEach(order => {
+                    const orderEl = document.createElement('div');
+                    orderEl.className = 'mb-6 pb-4 border-b border-gray-700';
+                    const orderDate = new Date(order.date).toLocaleDateString();
+                    let itemsHtml = Object.keys(order.items).map(productId => {
+                        const item = products[productId];
+                        const qty = order.items[productId];
+                        return `<li class="text-sm text-gray-400">${qty} x ${item.name}</li>`;
+                    }).join('');
+                    
+                    orderEl.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">Order #${order.id.slice(0,8)}</span>
+                            <span class="text-sm text-gray-400">${orderDate}</span>
+                        </div>
+                        <ul class="list-disc list-inside mb-2">${itemsHtml}</ul>
+                        <p class="text-right font-semibold">Total: ₹${order.total.toFixed(2)}</p>
+                    `;
+                    orderHistoryContainer.prepend(orderEl);
+                });
+            }
 
             function handleAddToCart() {
                 cart[currentProductId] = (cart[currentProductId] || 0) + 1;
-                saveCartToSession(cart);
-
+                saveDataToSession('mickyMoneyCart', cart);
                 addToCartBtn.textContent = 'Adding...';
                 addToCartBtn.classList.add('adding');
-                
                 setTimeout(() => {
                     addToCartBtn.textContent = 'Added to Cart!';
-                    addToCartBtn.classList.remove('adding');
+                    addToCartBtn.classList.remove('adding', 'added');
                     addToCartBtn.classList.add('added');
                     updateCartUI();
-                    
                     setTimeout(() => {
                         addToCartBtn.textContent = 'Add to cart';
                         addToCartBtn.classList.remove('added');
                     }, 1500);
                 }, 500);
             }
-            
-            function openCartModal() {
-                renderCartItems();
-                cartModal.classList.remove('hidden');
-            }
 
-            function closeCartModal() {
-                cartModal.classList.add('hidden');
+            function handleCheckout() {
+                const total = parseFloat(cartTotalEl.textContent.replace('₹', ''));
+                const newOrder = {
+                    id: crypto.randomUUID(),
+                    date: new Date().toISOString(),
+                    items: cart,
+                    total: total
+                };
+                orders.push(newOrder);
+                saveDataToSession('mickyMoneyOrders', orders);
+                cart = {};
+                saveDataToSession('mickyMoneyCart', cart);
+                updateCartUI();
+                renderCartItems();
+                closeCartModal();
+                showAlert();
             }
             
-            function showAlert() {
-                alertModal.classList.remove('hidden');
+            function adjustQuantity(productId, amount) {
+                if (!cart[productId]) return;
+                cart[productId] += amount;
+                if (cart[productId] <= 0) {
+                    delete cart[productId];
+                }
+                saveDataToSession('mickyMoneyCart', cart);
+                updateCartUI();
+                renderCartItems();
             }
             
-            function closeAlert() {
-                alertModal.classList.add('hidden');
-            }
+            const openCartModal = () => { renderCartItems(); renderOrders(); cartModal.classList.remove('hidden'); };
+            const closeCartModal = () => cartModal.classList.add('hidden');
+            const showAlert = () => alertModal.classList.remove('hidden');
+            const closeAlert = () => alertModal.classList.add('hidden');
 
             // --- EVENT LISTENERS ---
             thumbnailContainer.addEventListener('click', (e) => {
-                const thumbnailButton = e.target.closest('.thumbnail');
-                if (thumbnailButton) {
-                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
-                    thumbnailButton.classList.add('active');
-                    const productId = thumbnailButton.dataset.productId;
-                    displayProduct(productId);
+                const btn = e.target.closest('.thumbnail');
+                if (btn) {
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    btn.classList.add('active');
+                    displayProduct(btn.dataset.productId);
+                }
+            });
+            addToCartBtn.addEventListener('click', handleAddToCart);
+            cartTriggers.forEach(btn => btn.addEventListener('click', openCartModal));
+            
+            if (closeCartBtn) {
+                closeCartBtn.addEventListener('click', closeCartModal);
+            }
+
+            cartModal.addEventListener('click', (e) => { if (e.target === cartModal) closeCartModal(); });
+            checkoutBtn.addEventListener('click', handleCheckout);
+            closeAlertBtn.addEventListener('click', closeAlert);
+            
+            cartItemsContainer.addEventListener('click', (e) => {
+                const target = e.target.closest('.quantity-btn');
+                if (!target) return;
+                const id = target.dataset.id;
+                if (target.classList.contains('increase-qty')) {
+                    adjustQuantity(id, 1);
+                } else if (target.classList.contains('decrease-qty')) {
+                    adjustQuantity(id, -1);
                 }
             });
 
-            addToCartBtn.addEventListener('click', handleAddToCart);
-            cartTriggers.forEach(btn => btn.addEventListener('click', openCartModal));
-            closeCartBtn.addEventListener('click', closeCartModal);
-            cartModal.addEventListener('click', (e) => {
-                if (e.target === cartModal) closeCartModal();
+            cartTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    cartTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    if (tab.dataset.tab === 'cart') {
+                        cartContent.classList.remove('hidden');
+                        ordersContent.classList.add('hidden');
+                    } else {
+                        cartContent.classList.add('hidden');
+                        ordersContent.classList.remove('hidden');
+                    }
+                });
             });
-            checkoutBtn.addEventListener('click', () => {
-                closeCartModal();
-                showAlert();
-            });
-            closeAlertBtn.addEventListener('click', closeAlert);
-            
-            // Mobile menu
+
             const mobileMenu = document.getElementById('mobile-menu');
             const openMenuBtn = document.getElementById('open-menu-btn');
             const closeMenuBtn = document.getElementById('close-menu-btn');
             openMenuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
             closeMenuBtn.addEventListener('click', () => mobileMenu.classList.add('hidden'));
 
-            // --- INITIALIZATION ---
+            // INITIALIZATION
             displayProduct(currentProductId);
             updateCartUI();
         });
     </script>
 </body>
 </html>
-

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micky Money - Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #e5e7eb;
+        }
+
+        /* --- MODERN SCROLLBAR STYLES --- */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #daa520 transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #daa520;
+            border-radius: 10px;
+            border: 2px solid #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #f0b93a;
+        }
+        /* --- END MODERN SCROLLBAR STYLES --- */
+
+        .main-container {
+            background-color: #2a2a2a;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        /* Product Card Styling Changes */
+        .product-card {
+            display: block; /* Ensures anchor tags behave like divs */
+            background: rgba(50, 50, 50, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            text-align: center;
+            padding: 1.5rem 1.5rem 5rem 1.5rem; /* Increased bottom padding to prevent text overlap */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        .product-card .image-wrapper {
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0.1) 65%);
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            position: relative;
+            z-index: 1;
+        }
+        .product-card img {
+            max-width: 160px;
+            height: auto;
+            transform: rotate(-15deg);
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover img {
+            transform: rotate(0deg) scale(1.05);
+        }
+        .product-card .price-tag {
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        .product-card .product-title {
+            color: #eee;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        /* Active state for category filter buttons */
+        .category-btn.active {
+            background-color: #daa520;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+        
+        /* Hide scrollbar for the category nav */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-10">
+    <div class="main-container p-6 sm:p-8 relative text-gray-200">
+
+        <header class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-goldenrod-500 rounded-full flex items-center justify-center text-black text-xl font-bold" style="background-color: #daa520;">
+                    <img src="images/mm_logo_black.png">
+                </div>
+                <span class="text-2xl font-bold text-gray-100">Micky Money</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-gray-400 hover:text-white">Home</a>
+                <a href="#" class="text-whitewhite font-semibold relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-goldenrod-400 after:bottom-[-4px] after:left-0" style="--tw-after-background-color: #daa520;">Shop</a>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <span class="text-lg font-medium text-gray-100">₹599.00</span>
+                <button class="relative w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-200"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="absolute top-1 right-1 w-5 h-5 bg-goldenrod-500 text-black text-xs font-bold rounded-full flex items-center justify-center" style="background-color: #daa520;">3</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="text-center py-10">
+                <h1 class="text-4xl md:text-6xl font-bold text-white">Our Collection</h1>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Discover our premium range of styling tools and personal care products, designed for professionals and enthusiasts alike.</p>
+            </section>
+
+            <!-- Search and Filter Section -->
+            <section class="sticky top-6 z-20 bg-[#2a2a2a]/80 backdrop-blur-md rounded-2xl p-4 mb-8">
+                <!-- Search Bar -->
+                <div class="relative mb-4">
+                    <input type="text" id="search-bar" placeholder="Search by product name or category..." class="w-full bg-gray-800 border-2 border-gray-700 rounded-lg py-3 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-goldenrod-500 focus:ring-1 focus:ring-goldenrod-500" style="--tw-focus-border-color: #daa520; --tw-focus-ring-color: #daa520;">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+                <!-- Category Filters -->
+                <div id="category-filters" class="flex items-center space-x-2 overflow-x-auto pb-2 no-scrollbar">
+                    <button class="category-btn active flex-shrink-0 px-4 py-2 bg-gray-700 rounded-lg text-sm font-semibold transition hover:bg-gray-600" data-category="all">All</button>
+                    <!-- Categories will be injected here by JS -->
+                </div>
+            </section>
+
+            <!-- Product Grid -->
+            <section id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Products will be injected here by JS -->
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const products = [
+                { name: 'Professional Pedicure Kit', category: 'PEDICURE', price: '₹1299', image: 'images/dryer.png', link: 'product.html' },
+                { name: 'Sandalwood Wooden Comb', category: 'WOODEN COMB', price: '₹499', image: 'https://placehold.co/300x300/333/FFF?text=Comb', link: 'product-comb.html' },
+                { name: 'Titanium Hair Straightener', category: 'STRAIGHTENER', price: '₹3499', image: 'https://placehold.co/300x300/333/FFF?text=Straightener', link: 'product-straightener.html' },
+                { name: 'Pro Ionic Hair Dryer', category: 'DRYER', price: '₹5999', image: 'https://placehold.co/300x300/333/FFF?text=Dryer', link: 'index.html' }, // Example link back to main product page
+                { name: 'Ceramic Hair Curler', category: 'HAIR CURLER', price: '₹2499', image: 'https://placehold.co/300x300/333/FFF?text=Curler', link: 'product-curler.html' },
+                { name: 'One-Touch Automatic Curler', category: 'AUTOMATIC CURLER', price: '₹4999', image: 'https://placehold.co/300x300/333/FFF?text=Auto+Curler', link: 'product-auto-curler.html' },
+                { name: 'Lavender Room Spray', category: 'ROOM SPRAY', price: '₹799', image: 'https://placehold.co/300x300/333/FFF?text=Spray', link: 'product-spray.html' },
+                { name: 'Stainless Steel Nail Cutter', category: 'NAIL CUTTER', price: '₹399', image: 'https://placehold.co/300x300/333/FFF?text=Nail+Cutter', link: 'product-nail-cutter.html' },
+                { name: 'Gold Facial Kit', category: 'FACIAL KIT', price: '₹1999', image: 'https://placehold.co/300x300/333/FFF?text=Facial+Kit', link: 'product-facial-kit.html' },
+                { name: 'Precision Tinkle Razor', category: 'TINKEL RAISER', price: '₹299', image: 'https://placehold.co/300x300/333/FFF?text=Razor', link: 'product-razor.html' },
+                { name: 'Matte Black Section Clips', category: 'HAIR SECTION CLIPPER', price: '₹599', image: 'https://placehold.co/300x300/333/FFF?text=Clips', link: 'product-clips.html' },
+                { name: 'Compact Travel Dryer', category: 'DRYER', price: '₹2999', image: 'https://placehold.co/300x300/333/FFF?text=Travel+Dryer', link: 'product-travel-dryer.html' }
+            ];
+
+            const grid = document.getElementById('product-grid');
+            const searchBar = document.getElementById('search-bar');
+            const categoryFiltersContainer = document.getElementById('category-filters');
+            
+            let currentCategory = 'all';
+            let currentSearchTerm = '';
+
+            // 1. Create Category Buttons
+            const categories = ['All', ...new Set(products.map(p => p.category))];
+            categoryFiltersContainer.innerHTML = categories.map(cat => `
+                <button class="category-btn ${cat === 'All' ? 'active' : ''} flex-shrink-0 px-4 py-2 bg-gray-700 rounded-lg text-sm font-semibold transition hover:bg-gray-600" data-category="${cat.toLowerCase().replace(/\s+/g, '-')}">${cat}</button>
+            `).join('');
+            const categoryButtons = categoryFiltersContainer.querySelectorAll('.category-btn');
+
+            // 2. Render Products Function
+            const renderProducts = () => {
+                const filteredProducts = products.filter(product => {
+                    const matchesCategory = currentCategory === 'all' || product.category.toLowerCase().replace(/\s+/g, '-') === currentCategory;
+                    const matchesSearch = currentSearchTerm === '' || 
+                                          product.name.toLowerCase().includes(currentSearchTerm) ||
+                                          product.category.toLowerCase().includes(currentSearchTerm);
+                    return matchesCategory && matchesSearch;
+                });
+
+                if (filteredProducts.length > 0) {
+                     grid.innerHTML = filteredProducts.map(product => `
+                        <a href="${product.link}" class="product-card">
+                            <div class="image-wrapper">
+                                <img src="${product.image}" alt="${product.name}">
+                            </div>
+                            <h4 class="product-title text-lg">${product.name}</h4>
+                            <p class="text-sm text-gray-400 mt-1">${product.category}</p>
+                            <div class="price-tag text-base">${product.price}</div>
+                        </a>
+                    `).join('');
+                } else {
+                    grid.innerHTML = `<div class="col-span-full text-center text-gray-400 py-16">
+                                        <h3 class="text-2xl font-semibold">No products found</h3>
+                                        <p>Try adjusting your search or filter.</p>
+                                      </div>`;
+                }
+            };
+
+            // 3. Event Listeners
+            searchBar.addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value.toLowerCase();
+                renderProducts();
+            });
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentCategory = button.dataset.category;
+                    renderProducts();
+                });
+            });
+
+            // Initial Render
+            renderProducts();
+        });
+    </script>
+</body>
+</html>

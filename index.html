@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micky Money - Product Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a; /* Dark background */
+        }
+
+        /* --- MODERN SCROLLBAR STYLES --- */
+        /* For Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #daa520 transparent;
+        }
+
+        /* For WebKit Browsers (Chrome, Safari, Edge) */
+        ::-webkit-scrollbar {
+            width: 8px; /* Slim scrollbar */
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; /* Transparent track */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #daa520; /* Theme color for the thumb */
+            border-radius: 10px; /* Rounded corners */
+            border: 2px solid #1a1a1a; /* Creates a "floating" effect */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #f0b93a; /* Brighter gold on hover */
+        }
+        /* --- END MODERN SCROLLBAR STYLES --- */
+
+        .main-container {
+            background-color: #2a2a2a; /* Slightly lighter container */
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);  
+        }
+        .gradient-section {
+            position: relative;
+            overflow: hidden; /* already present, keeps gradient inside */
+            border-radius: 1.5rem; /* or rounded-3xl if using Tailwind */
+        }
+
+        .gradient-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%; /* half height */
+            background-image: linear-gradient(135deg, #daa520 0%, #523a00 100%);
+            z-index: 0;
+            border-radius: inherit; /* this makes it follow parent’s rounded corners */
+        }
+
+        /* Ensure content sits above */
+        .gradient-section > * {
+            position: relative;
+            z-index: 1;
+        }
+        .blurry-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0) 70%);
+            filter: blur(40px);
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .product-card {
+            background: rgba(40, 40, 40, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .image-bg-circle {
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0.1) 65%);
+        }
+        .size-btn.active {
+            background-color: #daa520; /* Goldenrod */
+            color: white;
+        }
+        .thumbnail.active {
+            border-color: #daa520; /* Goldenrod */
+        }
+        .color-swatch.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 3px white, 0 0 0 5px #daa520; /* Goldenrod */
+        }
+        /* Updated Related Product Card Styling */
+        .related-product-card {
+            background: rgba(50, 50, 50, 0.4); /* Semi-transparent dark */
+            backdrop-filter: blur(10px); /* Blurry effect */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Light border */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25); /* Soft shadow */
+            position: relative;
+            overflow: hidden;
+        }
+        .related-product-card .image-wrapper {
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(218, 165, 32, 0.1) 65%);
+            border-radius: 50%;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            position: relative;
+            z-index: 1;
+        }
+        .related-product-card img {
+            max-width: 150px;
+            height: auto;
+            transform: rotate(-15deg); /* Initial rotation */
+            transition: transform 0.3s ease-in-out;
+        }
+        .related-product-card:hover img {
+            transform: rotate(0deg) scale(1.05); /* Rotate and slight scale on hover */
+        }
+        .related-product-card .price-tag {
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px; /* Full rounded */
+            position: absolute;
+            bottom: 20px; /* Adjust position */
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        .related-product-card .shoe-title {
+            color: #eee;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-10">
+    <div class="main-container p-6 sm:p-8 relative text-gray-200">
+
+        <header class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-goldenrod-500 rounded-full flex items-center justify-center text-black text-xl font-bold" style="background-color: #daa520;">
+                    <img src ="images/mm_logo_black.png">
+                </div>
+                <span class="text-2xl font-bold text-gray-100">Micky Money</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-white font-semibold relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-goldenrod-400 after:bottom-[-4px] after:left-0" style="--tw-after-background-color: #daa520;">Home</a>
+                <a href="shop.html" class="text-gray-400 hover:text-white">Shop</a>
+                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <span class="text-lg font-medium text-gray-100">₹599.00</span>
+                <button class="relative w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-200"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="absolute top-1 right-1 w-5 h-5 bg-goldenrod-500 text-black text-xs font-bold rounded-full flex items-center justify-center" style="background-color: #daa520;">3</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="gradient-section rounded-3xl p-6 sm:p-10 relative">
+            <div class="blurry-circle"></div>
+            <div class="flex items-center justify-between text-white mb-6">
+                <p class="text-sm">Home / Product details</p>
+                <div class="flex items-center space-x-4">
+                    <span>Next Product</span>
+                    <div class="flex items-center space-x-2">
+                        <button class="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center hover:bg-white/20 transition">&larr;</button>
+                        <button class="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center hover:bg-white/20 transition">&rarr;</button>
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl font-bold text-center text-white mb-8">Product Details</h1>
+
+            <div class="product-card rounded-2xl p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-3 text-center lg:text-left">
+                    <h2 class="text-3xl font-bold text-gray-100">Premium Hair Dryer</h2>
+                    <p class="text-gray-400 mt-2 mb-6">Style. Groom. Glow. Experience professional-grade grooming with our premium dryer & styling tools.</p>
+                    <div class="flex justify-center lg:justify-start space-x-3" id="thumbnail-container">
+                        <button class="thumbnail active p-2 border-2 border-transparent bg-gray-800 rounded-lg transition">
+                            <img src="images/dryer.png" alt="Clipper" class="w-16 h-16 object-contain" data-src="images/dryer.png">
+                        </button>
+                        <button class="thumbnail p-2 border-2 border-transparent bg-gray-800 rounded-lg transition">
+                            <img src="https://placehold.co/100x100/333/FFF?text=Straightener" alt="Straightener" class="w-16 h-16 object-contain" data-src="https://placehold.co/600x600/333/FFF?text=Straightener">
+                        </button>
+                        <button class="thumbnail p-2 border-2 border-transparent bg-gray-800 rounded-lg transition">
+                            <img src="https://placehold.co/100x100/333/FFF?text=Dryer" alt="Dryer" class="w-16 h-16 object-contain" data-src="https://placehold.co/600x600/333/FFF?text=Dryer">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex items-center justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="image-bg-circle absolute inset-0 rounded-full scale-110"></div>
+                        <div class="image-bg-circle absolute inset-4 rounded-full scale-100"></div>
+                        <img id="main-product-image" src="images/dryer.png" alt="Premium Hair Dryer" class="relative z-10 w-full transform -rotate-12 hover:rotate-0 transition-transform duration-500 ease-in-out">
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-full px-6 py-2 text-xl font-bold text-white shadow-md">
+                            ₹599
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4">
+                    <div class="mb-4">
+                        <span class="text-gray-300 font-medium">Review:</span>
+                        <div class="flex items-center space-x-1">
+                            <span class="text-yellow-400">★★★★</span><span class="text-gray-500">★</span>
+                            <span class="text-gray-400 ml-2 text-sm">4.8 (120)</span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-gray-300 font-medium block mb-2">Color:</span>
+                        <div class="flex items-center space-x-3" id="color-container">
+                            <button class="color-swatch active w-8 h-8 rounded-full bg-black border border-gray-600 transition" data-color="black"></button>
+                            <button class="color-swatch w-8 h-8 rounded-full bg-yellow-500 transition" data-color="gold"></button>
+                            <button class="color-swatch w-8 h-8 rounded-full bg-gray-400 transition" data-color="silver"></button>
+                            <button class="color-swatch w-8 h-8 rounded-full bg-gray-700 transition" data-color="chrome"></button>
+                        </div>
+                    </div>
+                    <button class="w-full bg-goldenrod-600 text-black font-bold py-4 rounded-xl hover:bg-goldenrod-500 transition-colors duration-300" style="background-color: #daa520;">Add to cart</button>
+                </div>
+            </div>
+        </main>
+        
+        <section class="mt-12">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
+                 <h3 class="text-3xl font-bold text-gray-100 mb-4 sm:mb-0">Our Styling Tools</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="related-product-card rounded-2xl p-6 text-center">
+                    <div class="image-wrapper">
+                        <img src="clipper.png" alt="Pro Hair Straightener" class="z-10">
+                    </div>
+                    <h4 class="shoe-title font-semibold text-lg text-gray-200">Pro Hair Straightener</h4>
+                    <p class="price-tag text-goldenrod-400" style="color: #daa520;">₹599.00</p>
+                </div>
+                <div class="related-product-card rounded-2xl p-6 text-center">
+                    <div class="image-wrapper">
+                        <img src="clipper.png" alt="Ionic Hair Dryer" class="z-10">
+                    </div>
+                    <h4 class="shoe-title font-semibold text-lg text-gray-200">Ionic Hair Dryer</h4>
+                    <p class="price-tag text-goldenrod-400" style="color: #daa520;">₹599.00</p>
+                </div>
+                 <div class="related-product-card rounded-2xl p-6 text-center">
+                    <div class="image-wrapper">
+                        <img src="clipper.png" alt="Automatic Hair Curler" class="z-10">
+                    </div>
+                    <h4 class="shoe-title font-semibold text-lg text-gray-200">Automatic Hair Curler</h4>
+                    <p class="price-tag text-goldenrod-400" style="color: #daa520;">₹599.00</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-16 text-center">
+            <a href="shop.html" class="inline-block text-black font-bold py-3 px-8 rounded-xl hover:bg-goldenrod-500 transition-colors duration-300 text-lg xl:text-xl" style="background-color: #daa520;">
+                Explore More
+            </a>
+        </section>
+    </div>
+
+    <script>
+        // JavaScript for interactivity
+        document.addEventListener('DOMContentLoaded', function () {
+            // Color selection
+            const colorContainer = document.getElementById('color-container');
+            const colorSwatches = colorContainer.querySelectorAll('.color-swatch');
+
+            colorContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('color-swatch')) {
+                    colorSwatches.forEach(swatch => swatch.classList.remove('active'));
+                    e.target.classList.add('active');
+                }
+            });
+
+            // Thumbnail image selection
+            const thumbnailContainer = document.getElementById('thumbnail-container');
+            const thumbnails = thumbnailContainer.querySelectorAll('.thumbnail');
+            const mainImage = document.getElementById('main-product-image');
+
+            thumbnailContainer.addEventListener('click', (e) => {
+                const thumbnailButton = e.target.closest('.thumbnail');
+                if (thumbnailButton) {
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    thumbnailButton.classList.add('active');
+
+                    const newImageSrc = thumbnailButton.querySelector('img').dataset.src;
+                    mainImage.src = newImageSrc;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
